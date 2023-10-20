@@ -18,13 +18,13 @@ public:
 
 		Account(int id, int credit) : _id(id), _credit(credit) {}
 
-		int getId() const { return _id; }
 		void setId(int id) { this->_id = id; }
 		void credit(int value) { this->_credit += value; }
 
 	public:
 
 		int getCredit() const { return _credit; }
+		int getId() const { return _id; }
 
 		friend std::ostream& operator << (std::ostream& os, const Account& account) {
 			os << "[" << account.getId() << "] - [" << account.getCredit() << "]";
@@ -34,54 +34,47 @@ public:
 
 private:
 
-	typedef std::map<int, Account*> AccountMap;
+	typedef std::map<int, Account> AccountMap;
 
 public:
 
 	Bank(int liquidity) : _liquidity(liquidity), _maxId(0) {}
 
-	~Bank() {
-		for (AccountMap::iterator it = this->_clientAccounts.begin(); it != this->_clientAccounts.end(); ++it)
-			delete it->second;
-	}
+	~Bank() {}
 
 	int getLiquidity() const { return _liquidity; }
 
-	Account *createAccount() {
+	int createAccount() {
 		int newAccountId = this->_maxId++;
-		Account *account = new Account(newAccountId, 0);
-		this->_clientAccounts[newAccountId] = account;
-		return account;
+		this->_clientAccounts.insert(std::make_pair(newAccountId, Account(newAccountId, 0)));
+		return newAccountId;
 	}
 
-	void deleteAccount(Account *account) {
-		if (account == NULL)
-			THROW("Invalid account");
-		
-		this->_clientAccounts.erase(account->getId());
-		delete account;
+	void deleteAccount(int id) {
+		this->_clientAccounts.erase(id);
 	}
 
-	void creditAccount(Account *account, int value) {
-		if (account == NULL)
-			THROW("Invalid account");
-
+	void creditAccount(int id, int value) {
+		if (this->_clientAccounts.count(id) == 0)
+			THROW("Invalid account id");
+		if (value < 0)
+			THROW("Invalid value");
 		this->addLiquidity(value * 0.05);
-		account->credit(value * 0.95);
+		this->_clientAccounts.at(id).credit(value * 0.95);
 	}
 
-	void giveLoan(Account *account, int value) {
-		if (account == NULL)
-			THROW("Invalid account");
+	void giveLoan(int id, int value) {
+		if (this->_clientAccounts.count(id) == 0)
+			THROW("Invalid account id");
 		if (value < 0 || value > this->_liquidity)
 			THROW("Invalid value");
 		
 		this->addLiquidity(-value);
-		account->credit(value);
+		this->_clientAccounts.at(id).credit(value);
 	}
 
-	Account *operator [] (int id) {
-		AccountMap::iterator it = this->_clientAccounts.find(id);
+	const Account &operator [] (int id) const {
+		AccountMap::const_iterator it = this->_clientAccounts.find(id);
 		if (it == this->_clientAccounts.end())
 			THROW("Invalid account id");
 		return it->second;
@@ -91,7 +84,7 @@ public:
 		os << "Bank informations : " << std::endl;
 		os << "Liquidity : " << bank.getLiquidity() << std::endl;
 		for (AccountMap::const_iterator it = bank._clientAccounts.begin(); it != bank._clientAccounts.end(); ++it)
-			os << *it->second << std::endl;
+			os << it->second << std::endl;
 		return os;
 	}
 
@@ -109,19 +102,26 @@ int main() {
 
 		Bank bank = Bank(999);
 
-		Bank::Account *accountA = bank.createAccount();
-		bank.creditAccount(accountA, 100);
+		int accountA_id = bank.createAccount();
+		bank.creditAccount(accountA_id, 100);
 
 		std::cout << bank << std::endl;
 
-		Bank::Account *accountB = bank.createAccount();
-		bank.creditAccount(accountB, 200);
-		bank.giveLoan(accountA, 100);
+		int accountB_id = bank.createAccount();
+		bank.creditAccount(accountB_id, 200);
+		bank.giveLoan(accountA_id, 100);
 
 		std::cout << bank << std::endl;
 
-		// bank.creditAccount(NULL, 100);
-		// bank.giveLoan(accountA, 1000);
+		bank.deleteAccount(accountA_id);
+
+		std::cout << bank << std::endl;
+
+		Bank::Account accountB = bank[accountB_id];
+		std::cout << accountB << std::endl;
+
+		// bank.creditAccount(-1, 100);
+		// bank.giveLoan(accountA_id, 1000);
 
 
 	} catch (std::runtime_error &e) {
