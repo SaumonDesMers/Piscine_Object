@@ -4,7 +4,7 @@ CXX = clang++
 CXXFLAGS = -std=c++98 -g -Wall -Wextra -Werror
 
 VPATH =
-SRCS = main.cpp worker.cpp shovel.cpp
+SRCS = main.cpp worker.cpp shovel.cpp tool.cpp hammer.cpp workshop.cpp
 INC_DIR =
 
 OBJ_DIR = obj

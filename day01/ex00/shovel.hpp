@@ -3,15 +3,11 @@
 
 #include <iostream>
 
+#include "tool.hpp"
 #include "worker.hpp"
 
-#define LOG_FUNCTION std::cout << __PRETTY_FUNCTION__ << std::endl;
-
-class Worker;
-
-class Shovel
+class Shovel: public Tool
 {
-	friend class Worker;
 
 public:
 
@@ -19,19 +15,7 @@ public:
 	Shovel(int numberOfUses);
 	~Shovel();
 
-	int getNumberOfUses() const;
-	void setNumberOfUses(int numberOfUses);
-
-	void assign(Worker *worker);
-	void unassign();
-
 	void use();
-
-private:
-
-	int _numberOfUses;
-
-	Worker *_worker;
 
 };
 
