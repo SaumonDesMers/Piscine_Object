@@ -2,6 +2,8 @@
 #include <vector>
 #include <cstring>
 
+namespace math {
+
 class Vector2 {
 
 public:
@@ -66,24 +68,26 @@ public:
 
 };
 
+}
+
 int main() {
 
 	try {
 
-		Graph graph(Vector2(10, 10));
+		math::Graph graph(math::Vector2(10, 10));
 
-		graph.addVertex(Vector2(3, 1));
-		graph.addVertex(Vector2(2, 5));
-		graph.addVertex(Vector2(8, 6));
-		graph.addVertex(Vector2(5, 8));
-		graph.addVertex(Vector2(1, 9));
+		graph.addVertex(math::Vector2(3, 1));
+		graph.addVertex(math::Vector2(2, 5));
+		graph.addVertex(math::Vector2(8, 6));
+		graph.addVertex(math::Vector2(5, 8));
+		graph.addVertex(math::Vector2(1, 9));
 
 		graph.print();
 
 		std::cout << std::endl;
 
-		graph.removeVertex(Vector2(8, 6));
-		graph.removeVertex(Vector2(1, 9));
+		graph.removeVertex(math::Vector2(8, 6));
+		graph.removeVertex(math::Vector2(1, 9));
 
 		graph.print();
 
