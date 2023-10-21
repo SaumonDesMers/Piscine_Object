@@ -3,7 +3,10 @@
 
 #include "worker.hpp"
 
+#define LOG_FUNCTION std::cout << __PRETTY_FUNCTION__ << std::endl;
+
 class Worker;
+class Tool;
 
 class Workshop
 {
@@ -29,6 +32,25 @@ public:
 	 */
 	void executeWorkDay();
 
+	/**
+	 * @brief Sets the tool that is restricted to this workshop.
+	 * 
+	 * @tparam T The type of the tool.
+	 */
+	template <typename ToolType>
+	void setRestrictedTool() { LOG_FUNCTION
+		if (this->_restrictedTool)
+			this->removeRestrictedTool();
+		this->_restrictedTool = new ToolType();
+		this->_removeUnsuitableWorkers();
+	}
+
+	/**
+	 * @brief Removes the restricted tool from the workshop.
+	 * 
+	 */
+	void removeRestrictedTool();
+
 private:
 
 	/**
@@ -36,6 +58,12 @@ private:
 	 * 
 	 */
 	WorkerSet _workers;
+
+	/**
+	 * @brief The tool that is restricted to this workshop.
+	 * 
+	 */
+	Tool *_restrictedTool;
 
 	/**
 	 * @brief Adds a worker to the workshop.
@@ -50,6 +78,21 @@ private:
 	 * @param worker The worker to remove.
 	 */
 	void _removeWorker(Worker *worker);
+
+	/**
+	 * @brief Checks if a worker can enter the workshop.
+	 * 
+	 * @param worker The worker to check.
+	 * @return true if the worker can enter the workshop.
+	 * @return false if the worker cannot enter the workshop.
+	 */
+	bool _isWorkerSuitable(Worker *worker) const;
+
+	/**
+	 * @brief Removes all the workers that cannot enter the workshop.
+	 * 
+	 */
+	void _removeUnsuitableWorkers();
 
 };
 

@@ -1,10 +1,10 @@
 #include "position.hpp"
 #include "statistic.hpp"
+#include "workshop.hpp"
 #include "worker.hpp"
 #include "shovel.hpp"
 #include "tool.hpp"
 #include "hammer.hpp"
-#include "workshop.hpp"
 
 #define TITLE(X) std::cout << "\033[1;32m" << X << "\033[0m\n" << std::endl;
 #define SUBTITLE(X) std::cout << "\033[1;33m" << X << "\033[0m" << std::endl;
@@ -76,6 +76,33 @@ int main() {
 		workerA.grabTool(&hammer);
 		Tool *tool = workerA.getTool<Shovel>();
 		tool->use();
+
+		std::cout << std::endl;
+		SUBTITLE("Restricting workshopA to Shovel and trying to register workerB to it")
+		workshopA.setRestrictedTool<Shovel>();
+		try {
+			workerB.enter(&workshopA);
+		} catch (std::exception &e) {
+			std::cout << "Error: " << e.what() << std::endl;
+		}
+
+		std::cout << std::endl;
+		SUBTITLE("Registering workerA to workshopA and working")
+		workerA.enter(&workshopA);
+		workerA.work();
+
+		std::cout << std::endl;
+		SUBTITLE("Set workshopA restricted tool to Hammer and working")
+		workshopA.setRestrictedTool<Hammer>();
+		workshopA.executeWorkDay();
+
+		std::cout << std::endl;
+		SUBTITLE("WorkerA drops shovel")
+		workerA.dropTool(&shovel);
+
+		std::cout << std::endl;
+		SUBTITLE("WorkerA drops hammer")
+		workerA.dropTool(&hammer);
 
 		std::cout << std::endl;
 		SUBTITLE("End of scope")

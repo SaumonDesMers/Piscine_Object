@@ -15,6 +15,12 @@ Worker::~Worker() { LOG_FUNCTION
 		this->leave(*this->_workshops.begin());
 }
 
+//##########################################
+//#                                        #
+//#             TOOL METHODS               #
+//#									       #
+//##########################################
+
 void Worker::grabTool(Tool *tool) { LOG_FUNCTION
 	if (!tool)
 		throw std::runtime_error("Cannot add NULL tool");
@@ -23,6 +29,10 @@ void Worker::grabTool(Tool *tool) { LOG_FUNCTION
 }
 
 void Worker::dropTool(Tool *tool) { LOG_FUNCTION
+	if (!tool)
+		throw std::runtime_error("Cannot remove NULL tool");
+	if (this->_tools.find(tool) == this->_tools.end())
+		throw std::runtime_error("Cannot remove unequipped tool");
 	tool->_unassign();
 }
 
@@ -30,6 +40,14 @@ void Worker::_removeTool(Tool *tool) { LOG_FUNCTION
 	if (this->_tools.find(tool) == this->_tools.end())
 		throw std::runtime_error("Cannot remove unequipped tool");
 	this->_tools.erase(tool);
+	
+	std::vector<Workshop *> workshopsToLeave;
+	for (WorkshopSet::iterator it = this->_workshops.begin(); it != this->_workshops.end(); ++it) {
+		if ((*it)->_isWorkerSuitable(this) == false)
+			workshopsToLeave.push_back(*it);
+	}
+	for (std::vector<Workshop *>::iterator it = workshopsToLeave.begin(); it != workshopsToLeave.end(); ++it)
+		(*it)->_removeWorker(this);
 }
 
 Worker::ToolSet const & Worker::getTools() const { LOG_FUNCTION
@@ -40,6 +58,12 @@ void Worker::useTools() { LOG_FUNCTION
 	for (ToolSet::iterator it = this->_tools.begin(); it != this->_tools.end(); ++it)
 		(*it)->use();
 }
+
+//##########################################
+//#                                        #
+//#           WORKSHOP METHODS             #
+//#									       #
+//##########################################
 
 void Worker::enter(Workshop *workshop) { LOG_FUNCTION
 	if (!workshop)

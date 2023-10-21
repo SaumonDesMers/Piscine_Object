@@ -25,7 +25,7 @@ public:
 	 * @details If the tool is assigned to a worker, unassigns the tool from the worker.
 	 * 
 	 */
-	~Tool();
+	virtual ~Tool();
 
 	/**
 	 * @return The number of times this tool has been used.
@@ -49,7 +49,7 @@ public:
 protected:
 
 	/**
-	 * @brief The number of times this tool has been used.
+	 * @brief The number of times this tool have left to be used.
 	 * 
 	 */
 	int _numberOfUses;
