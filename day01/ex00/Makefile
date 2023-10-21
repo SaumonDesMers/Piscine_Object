@@ -1,4 +1,4 @@
-target = a.out
+target = do_some_work
 
 CXX = clang++
 CXXFLAGS = -std=c++98 -g -Wall -Wextra -Werror

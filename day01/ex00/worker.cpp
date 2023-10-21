@@ -8,29 +8,28 @@
 
 Worker::Worker() : position(), statistic() { LOG_FUNCTION }
 Worker::~Worker() { LOG_FUNCTION
-	std::vector<Tool *> tools;
-	for (ToolSet::iterator it = this->_tools.begin(); it != this->_tools.end(); ++it)
-		tools.push_back(*it);
-	for (std::vector<Tool *>::iterator it = tools.begin(); it != tools.end(); ++it)
-		(*it)->unassign();
+	while (!this->_tools.empty())
+		this->dropTool(*this->_tools.begin());
 	
-	std::vector<Workshop *> workshops;
-	for (WorkshopSet::iterator it = this->_workshops.begin(); it != this->_workshops.end(); ++it)
-		workshops.push_back(*it);
-	for (std::vector<Workshop *>::iterator it = workshops.begin(); it != workshops.end(); ++it)
-		(*it)->removeWorker(this);
+	while (!this->_workshops.empty())
+		this->leave(*this->_workshops.begin());
 }
 
-void Worker::addTool(Tool *tool) { LOG_FUNCTION
+void Worker::grabTool(Tool *tool) { LOG_FUNCTION
 	if (!tool)
 		throw std::runtime_error("Cannot add NULL tool");
-	tool->assign(this);
+	tool->_assign(this);
+	this->_tools.insert(tool);
 }
 
-void Worker::removeTool(Tool *tool) { LOG_FUNCTION
+void Worker::dropTool(Tool *tool) { LOG_FUNCTION
+	tool->_unassign();
+}
+
+void Worker::_removeTool(Tool *tool) { LOG_FUNCTION
 	if (this->_tools.find(tool) == this->_tools.end())
 		throw std::runtime_error("Cannot remove unequipped tool");
-	tool->unassign();
+	this->_tools.erase(tool);
 }
 
 Worker::ToolSet const & Worker::getTools() const { LOG_FUNCTION
@@ -47,7 +46,7 @@ void Worker::enter(Workshop *workshop) { LOG_FUNCTION
 		throw std::runtime_error("Cannot enter NULL workshop");
 	if (this->_workshops.find(workshop) != this->_workshops.end())
 		throw std::runtime_error("Cannot enter workshop twice");
-	workshop->addWorker(this);
+	workshop->_addWorker(this);
 }
 
 void Worker::leave(Workshop *workshop) { LOG_FUNCTION
@@ -55,7 +54,7 @@ void Worker::leave(Workshop *workshop) { LOG_FUNCTION
 		throw std::runtime_error("Cannot leave NULL workshop");
 	if (this->_workshops.find(workshop) == this->_workshops.end())
 		throw std::runtime_error("Cannot leave workshop that worker is not in");
-	workshop->removeWorker(this);
+	workshop->_removeWorker(this);
 }
 
 void Worker::work() { LOG_FUNCTION
