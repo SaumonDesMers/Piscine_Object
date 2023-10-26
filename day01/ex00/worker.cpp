@@ -6,7 +6,7 @@
 #define LOG_FUNCTION std::cout << __PRETTY_FUNCTION__ << std::endl;
 
 
-Worker::Worker() : position(), statistic() { LOG_FUNCTION }
+Worker::Worker() : coordonnee(), stat() { LOG_FUNCTION }
 Worker::~Worker() { LOG_FUNCTION
 	while (!this->_tools.empty())
 		this->dropTool(*this->_tools.begin());

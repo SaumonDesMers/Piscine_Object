@@ -24,8 +24,8 @@ public:
 	typedef std::set<Tool *> ToolSet;
 	typedef std::set<Workshop *> WorkshopSet;
 
-	Position position;
-	Statistic statistic;
+	Position coordonnee;
+	Statistic stat;
 
 	Worker();
 

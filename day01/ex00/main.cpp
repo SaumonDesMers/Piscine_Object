@@ -72,9 +72,9 @@ int main() {
 
 		std::cout << std::endl;
 		SUBTITLE("Assigning shovel and hammer to workerA, getting shovel and using it")
-		workerA.grabTool(&shovel);
 		workerA.grabTool(&hammer);
-		Tool *tool = workerA.getTool<Shovel>();
+		workerA.grabTool(&shovel);
+		Tool *tool = workerA.getTool<Hammer>();
 		tool->use();
 
 		std::cout << std::endl;
@@ -101,7 +101,7 @@ int main() {
 		workerA.dropTool(&shovel);
 
 		std::cout << std::endl;
-		SUBTITLE("WorkerA drops hammer")
+		SUBTITLE("WorkerA drops hammer, should leave workshopA")
 		workerA.dropTool(&hammer);
 
 		std::cout << std::endl;
