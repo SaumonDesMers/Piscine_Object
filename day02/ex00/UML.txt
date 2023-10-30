@@ -1,0 +1,114 @@
+@startuml
+class Singleton
+
+interface LinkablePart {
+    {abstract} +void execute(float pression)
+}
+
+class Wheel {
+    +void executeRotation(float force)
+}
+
+class Gear {
+    -float demultiplier
+}
+
+class GearLever extends Singleton {
+    +int level
+    +void change()
+    +Gear * activeGear()
+}
+GearLever *-- Gear
+
+class Transmission {
+    +void activate(float force)
+}
+Transmission o-- Wheel
+
+class Crankshaft {
+    +void receiveForce(float volume)
+}
+Crankshaft o-- Transmission
+
+class ExplosionChamber {
+    +void fill(float volume)
+}
+ExplosionChamber o-- Crankshaft
+
+class Injector implements LinkablePart {
+    +void execute(float pression)
+}
+Injector o-- ExplosionChamber
+
+class Motor {
+    +void connectToTransmission(Transmission* transmission)
+}
+Motor *-- Injector
+Motor *-- ExplosionChamber
+Motor *-- Crankshaft
+
+Class Pedal {
+    -LinkablePart*
+    +void setTarget(LinkablePart* part)
+    +void use(float pression)
+}
+
+class Direction {
+    +void turn(float angle)
+}
+Direction o-- Wheel
+
+class DAE {
+    +force
+    +void use(float angle)
+}
+DAE o-- Direction
+
+class SteerWheel {
+    +void turn(float angle)
+}
+SteerWheel o-- DAE
+
+class Brake {
+    +void execute(float force)
+    +void attackWheel(Wheel* wheel)
+}
+Brake o-- Wheel
+
+class BrakeController implements LinkablePart {
+    +void execute(float pression)
+}
+BrakeController o-- Brake
+
+class Cockpit {
+    +managePedal()
+    +manageSteerWheel()
+    +manageGearLever()
+}
+Cockpit *-- Pedal
+Cockpit *-- SteerWheel
+Cockpit *-- GearLever
+
+class Electronics
+Electronics *-- DAE
+
+class Car
+Car *-- BrakeController
+Car *-- Direction
+Car *-- Transmission
+Car *-- Motor
+Car *-- Electronics
+Car *-- Cockpit
+
+@enduml
+
+
+
+
+
+
+
+
+
+
+
