@@ -3,9 +3,13 @@
 
 #include <iostream>
 
+#include "wheels.hpp"
+
 class GearBox {
 
 public:
+
+	GearBox(): _gearLevel(0) {}
 
 	/**
 	 * @brief Shifts up to the next gear.
@@ -44,9 +48,29 @@ public:
 		this->_gearLevel = -1;
 	}
 
+	/**
+	 * @brief Transmits the engine speed to the wheels.
+	 */
+	void transmit(int speed) {
+		if (this->_gearLevel == 0) {
+			std::cout << "Gearbox not in gear." << std::endl;
+			return;
+		}
+		std::cout << "Gearbox transmitting " << speed << " rpm with gear level " << this->_gearLevel << "." << std::endl;
+		this->_wheels->set_speed(speed * this->_gearLevel);
+	}
+
+	/**
+	 * @brief Sets the wheels to use.
+	 */
+	void set_wheels(Wheels *wheels) {
+		this->_wheels = wheels;
+	}
+
 private:
 
 	int _gearLevel;
+	Wheels *_wheels;
 
 };
 

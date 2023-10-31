@@ -4,6 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "wheels.hpp"
+
 class Brakes {
 
 public:
@@ -14,7 +16,8 @@ public:
 	 */
 	void apply(float force) {
 		std::cout << "Brakes applied with a force of " << force << "." << std::endl;
-		this->_force = std::max(0.0f, std::min(1.0f, force));
+		float clampedForce = std::max(0.0f, std::min(1.0f, force));
+		this->_wheels->brake(clampedForce);
 	}
 
 	/**
@@ -24,9 +27,16 @@ public:
 		this->apply(1);
 	}
 
+	/**
+	 * @brief Sets the wheels to apply the brakes to.
+	 */
+	void set_wheels(Wheels *wheels) {
+		this->_wheels = wheels;
+	}
+
 private:
 
-	float _force;
+	Wheels *_wheels;
 
 };
 

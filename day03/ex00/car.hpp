@@ -7,10 +7,18 @@
 #include "brakes.hpp"
 #include "gearbox.hpp"
 #include "steerwheel.hpp"
+#include "wheels.hpp"
 
 class Car {
 
 public:
+
+	Car() {
+		this->_engine.set_gearbox(&this->_gearbox);
+		this->_brakes.set_wheels(&this->_wheels);
+		this->_gearbox.set_wheels(&this->_wheels);
+		this->_steerwheel.set_wheels(&this->_wheels);
+	}
 
 	/**
 	 * @brief Starts the engine.
@@ -40,6 +48,7 @@ public:
 	 */
 	void shift_gears_up() {
 		this->_gearbox.shift_up();
+		this->_engine.transmit();
 	}
 
 	/**
@@ -47,6 +56,7 @@ public:
 	 */
 	void shift_gears_down() {
 		this->_gearbox.shift_down();
+		this->_engine.transmit();
 	}
 
 	/**
@@ -92,6 +102,7 @@ private:
 	Brakes _brakes;
 	GearBox _gearbox;
 	SteerWheel _steerwheel;
+	Wheels _wheels;
 
 };
 
