@@ -35,7 +35,10 @@ Car *-- SteerWheel
 Car *-- Gearbox
 Car *-- Wheels
 
-class Wheels
+class Wheels {
+	-speed
+	-angle
+}
 
 class Gearbox {
     -gearLevel
@@ -47,9 +50,7 @@ class Engine {
 }
 Engine o-- Gearbox
 
-class Brakes {
-    -force
-}
+class Brakes
 Brakes o-- Wheels
 
 class SteerWheel {

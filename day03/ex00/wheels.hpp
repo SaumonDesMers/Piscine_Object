@@ -23,9 +23,15 @@ public:
 		std::cout << "Wheels slowed down by " << force << " to " << this->_speed << "." << std::endl;
 	}
 
+	void turn(int angle) {
+		std::cout << "Wheels turned to " << angle << " degrees." << std::endl;
+		this->_angle = angle;
+	}
+
 private:
 
 	int _speed;
+	int _angle;
 
 };
 
