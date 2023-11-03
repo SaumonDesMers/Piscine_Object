@@ -18,6 +18,13 @@ int main(void) {
 
 	manager.executeWorkday();
 
+	tempWorker.mobilize(10);
+
+	contractEmployee.takeDaysOff(5);
+
+	apprentice.takeDaysOff(5);
+	apprentice.attendSchool(10);
+
 	manager.calculatePayroll();
 
 	return 0;
