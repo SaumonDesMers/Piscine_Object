@@ -1,4 +1,4 @@
-target = solId
+target = soliD
 
 CXX = clang++
 CXXFLAGS = -std=c++98 -g -Wall -Wextra -Werror
