@@ -56,7 +56,7 @@ Class Pedal {
 class Direction {
     +void turn(float angle)
 }
-Direction o-- Wheel
+Direction *-- Wheel
 
 class DAE {
     +force
@@ -78,7 +78,7 @@ Brake o-- Wheel
 class BrakeController implements LinkablePart {
     +void execute(float pression)
 }
-BrakeController o-- Brake
+BrakeController *-- Brake
 
 class Cockpit {
     +managePedal()
@@ -101,14 +101,3 @@ Car *-- Electronics
 Car *-- Cockpit
 
 @enduml
-
-
-
-
-
-
-
-
-
-
-
