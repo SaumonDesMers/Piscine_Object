@@ -13,7 +13,7 @@ public:
 
 };
 
-class IFileLogger : public ILogger {
+class IFileLogger : virtual public ILogger {
 
 public:
 
@@ -38,7 +38,7 @@ protected:
 
 };
 
-class IOstreamLogger : public ILogger {
+class IOstreamLogger : virtual public ILogger {
 
 public:
 
@@ -53,7 +53,7 @@ protected:
 	std::ostream * _stream;
 };
 
-class ILoggerHeader: public ILogger {
+class ILoggerHeader: virtual public ILogger {
 
 public:
 
