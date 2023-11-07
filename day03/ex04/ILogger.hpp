@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <map>
 
 class ILogger {
 	
@@ -38,11 +39,11 @@ protected:
 
 };
 
-class IOstreamLogger : virtual public ILogger {
+class IStreamLogger : virtual public ILogger {
 
 public:
 
-	IOstreamLogger(std::ostream & stream) : _stream(&stream) {}
+	IStreamLogger(std::ostream & stream) : _stream(&stream) {}
 
 	void setStream(std::ostream & stream) {
 		this->_stream = &stream;
@@ -55,41 +56,63 @@ protected:
 
 class ILoggerHeader: virtual public ILogger {
 
+protected:
+
+	typedef std::string (ILoggerHeader::*addHeaderFct)();
+	std::map<int, addHeaderFct> _addHeader;
+
+	std::string _addHeaders(std::string const & message) {
+		std::string completeMessage = "";
+
+		for (std::map<int, addHeaderFct>::iterator it = this->_addHeader.begin(); it != this->_addHeader.end(); it++)
+			completeMessage += (this->*(it->second))() + " ";
+
+		completeMessage += message;
+		return completeMessage;
+	}
+};
+
+class ILoggerHeaderDate : public ILoggerHeader {
+	
 public:
 
-	ILoggerHeader(std::string const & header = "", bool timestamp = false) : _header(header), _timestamp(timestamp) {}
-
-	void setHeader(std::string const & header) {
-		this->_header = header;
-	}
-
-	void setTimestamp(bool timestamp) {
-		this->_timestamp = timestamp;
+	ILoggerHeaderDate() {
+		this->_addHeader.insert(std::pair<int, addHeaderFct>(0, static_cast<addHeaderFct>(&ILoggerHeaderDate::_getTimestamp)));
 	}
 
 protected:
-
-	std::string _header;
-	bool _timestamp;
 
 	std::string _getTimestamp() {
 		time_t now = time(0);
 		tm *ltm = localtime(&now);
 		char buffer[50];
-		strftime(buffer, 50, "%Y-%m-%d %H:%M:%S", ltm);
+		strftime(buffer, 50, "[%Y-%m-%d %H:%M:%S]", ltm);
 		std::string timestamp(buffer);
 		return timestamp;
 	}
 
-	std::string _addHeader(std::string const & message) {
-		std::string completeMessage = "";
-		if (this->_timestamp)
-			completeMessage += this->_getTimestamp() + " ";
-		if (this->_header != "")
-			completeMessage += this->_header + " ";
+};
 
-		completeMessage += message;
-		return completeMessage;
+class ILoggerHeaderConstant : public ILoggerHeader {
+
+public:
+
+	ILoggerHeaderConstant(std::string const & header = "") : _header(header) {
+		this->_addHeader.insert(std::pair<int, addHeaderFct>(1, static_cast<addHeaderFct>(&ILoggerHeaderConstant::_getHeader)));
+	}
+
+	void setHeader(std::string const & header) {
+		this->_header = header;
+	}
+
+protected:
+
+	std::string _header;
+
+private:
+
+	std::string _getHeader() {
+		return this->_header + ":";
 	}
 
 };

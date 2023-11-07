@@ -22,18 +22,21 @@ public:
 
 	virtual float area() const {
 		float area = 0;
-		for (size_t i = 0; i < _vertices.size(); i++)
-			area += (_vertices[i].x * _vertices[(i + 1) % _vertices.size()].y) - (_vertices[i].y * _vertices[(i + 1) % _vertices.size()].x);
+		for (size_t i = 0; i < _vertices.size(); i++) {
+			vec2 const & v1 = _vertices[i];
+			vec2 const & v2 = _vertices[(i + 1) % _vertices.size()];
+			area += v1.x * v2.y - v1.y * v2.x;
+		}
 		return std::abs(area / 2);
 	}
 
 	virtual float perimeter() const {
 		float perimeter = 0;
-		for (size_t i = 0; i < _vertices.size(); i++)
-			perimeter += std::sqrt(
-				  std::pow(_vertices[i].x - _vertices[(i + 1) % _vertices.size()].x, 2)
-				+ std::pow(_vertices[i].y - _vertices[(i + 1) % _vertices.size()].y, 2)
-			);
+		for (size_t i = 0; i < _vertices.size(); i++) {
+			vec2 const & v1 = _vertices[i];
+			vec2 const & v2 = _vertices[(i + 1) % _vertices.size()];
+			perimeter += std::sqrt(std::pow(v2.x - v1.x, 2) + std::pow(v2.y - v1.y, 2));
+		}
 		return perimeter;
 	}
 

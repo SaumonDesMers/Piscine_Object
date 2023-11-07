@@ -64,7 +64,7 @@ public:
 
 	Command(int id, Date date, std::string client) : _id(id), _date(date), _client(client) {}
 
-	void add_article(Article article) {
+	void add_article(Article const & article) {
 		_articles.push_back(article);
 	}
 

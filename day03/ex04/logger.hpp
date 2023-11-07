@@ -17,23 +17,35 @@ public:
 
 };
 
-class FileLoggerHeader : public IFileLogger, public ILoggerHeader {
+class FileLoggerHeaderDate : public IFileLogger, public ILoggerHeaderDate {
 
 public:
 
-	FileLoggerHeader(std::string const & filename, std::string const & header = "", bool timestamp = false) : IFileLogger(filename), ILoggerHeader(header, timestamp) {}
+	FileLoggerHeaderDate(std::string const & filename) : IFileLogger(filename), ILoggerHeaderDate() {}
 
 	void write(std::string const & message) {
-		this->_file << this->_addHeader(message) << std::endl;
+		this->_file << this->_addHeaders(message) << std::endl;
 	}
 
 };
 
-class OstreamLogger : public IOstreamLogger {
+class FileLoggerHeaderConstant : public IFileLogger, public ILoggerHeaderConstant {
 
 public:
 
-	OstreamLogger(std::ostream & stream) : IOstreamLogger(stream) {}
+	FileLoggerHeaderConstant(std::string const & filename, std::string const & header) : IFileLogger(filename), ILoggerHeaderConstant(header) {}
+
+	void write(std::string const & message) {
+		this->_file << this->_addHeaders(message) << std::endl;
+	}
+
+};
+
+class StreamLogger : public IStreamLogger {
+
+public:
+
+	StreamLogger(std::ostream & stream) : IStreamLogger(stream) {}
 
 	void write(std::string const & message) {
 		*(this->_stream) << message << std::endl;
@@ -41,14 +53,26 @@ public:
 
 };
 
-class OstreamLoggerHeader : public IOstreamLogger, public ILoggerHeader {
+class StreamLoggerHeaderDate : public IStreamLogger, public ILoggerHeaderDate {
 
 public:
 
-	OstreamLoggerHeader(std::ostream & stream, std::string const & header = "", bool timestamp = false) : IOstreamLogger(stream), ILoggerHeader(header, timestamp) {}
+	StreamLoggerHeaderDate(std::ostream & stream) : IStreamLogger(stream) {}
 
 	void write(std::string const & message) {
-		*(this->_stream) << this->_addHeader(message) << std::endl;
+		*(this->_stream) << this->_addHeaders(message) << std::endl;
+	}
+
+};
+
+class StreamLoggerHeaderConstant : public IStreamLogger, public ILoggerHeaderConstant {
+
+public:
+
+	StreamLoggerHeaderConstant(std::ostream & stream, std::string const & header = "") : IStreamLogger(stream), ILoggerHeaderConstant(header) {}
+
+	void write(std::string const & message) {
+		*(this->_stream) << this->_addHeaders(message) << std::endl;
 	}
 
 };

@@ -1,30 +1,45 @@
 #include <iostream>
+#include <vector>
 
 #include "ILogger.hpp"
 #include "logger.hpp"
 
-void test(ILogger &logger) {
-	logger.write("This is a test");
+void test(ILogger *logger) {
+	logger->write("This is a test");
 }
 
 int main() {
 
+	std::vector<ILogger *> loggers;
+
 	FileLogger fileLogger("log.txt");
 	fileLogger.write("This is the file logger writing to log.txt");
+	loggers.push_back(&fileLogger);
 
-	OstreamLogger ostreamLogger(std::cout);
+	FileLoggerHeaderDate fileLoggerHeaderDate("log.txt");
+	fileLoggerHeaderDate.write("This is the file logger with header date writing to log.txt");
+	loggers.push_back(&fileLoggerHeaderDate);
+
+	FileLoggerHeaderConstant fileLoggerHeaderConstant("log.txt", "HEADER");
+	fileLoggerHeaderConstant.write("This is the file logger with header constant writing to log.txt");
+	loggers.push_back(&fileLoggerHeaderConstant);
+
+	StreamLogger ostreamLogger(std::cout);
 	ostreamLogger.write("This is the ostream logger writing to std::cout");
+	loggers.push_back(&ostreamLogger);
 
-	FileLoggerHeader fileLoggerHeader("log.txt", "HEADER", true);
-	fileLoggerHeader.write("This is the file logger header writing to log.txt");
+	StreamLoggerHeaderDate ostreamLoggerHeaderDate(std::cout);
+	ostreamLoggerHeaderDate.write("This is the ostream logger with header date writing to std::cout");
+	loggers.push_back(&ostreamLoggerHeaderDate);
 
-	OstreamLoggerHeader ostreamLoggerHeader(std::cout, "HEADER");
-	ostreamLoggerHeader.write("This is the ostream logger header writing to std::cout");
+	StreamLoggerHeaderConstant ostreamLoggerHeaderConstant(std::cout, "HEADER");
+	ostreamLoggerHeaderConstant.write("This is the ostream logger with header constant writing to std::cout");
+	loggers.push_back(&ostreamLoggerHeaderConstant);
 
-	test(fileLogger);
-	test(ostreamLogger);
-	test(fileLoggerHeader);
-	test(ostreamLoggerHeader);
+	for (std::vector<ILogger *>::iterator it = loggers.begin(); it != loggers.end(); it++) {
+		test(*it);
+	}
+
 
 	return 0;
 }

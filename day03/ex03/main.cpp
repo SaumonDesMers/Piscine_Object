@@ -4,6 +4,8 @@
 #include "hourlyEmployee.hpp"
 #include "salariedEmployee.hpp"
 
+#define NL std::cout << std::endl;
+
 int main(void) {
 
 	EmployeeManager manager;
@@ -17,13 +19,17 @@ int main(void) {
 	manager.addEmployee(&apprentice);
 
 	manager.executeWorkday();
+	NL
 
 	tempWorker.mobilize(10);
-
 	contractEmployee.takeDaysOff(5);
-
 	apprentice.takeDaysOff(5);
 	apprentice.attendSchool(10);
+	
+	manager.executeWorkday();
+	NL
+	manager.executeWorkday();
+	NL
 
 	manager.calculatePayroll();
 

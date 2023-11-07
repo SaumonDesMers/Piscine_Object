@@ -24,11 +24,11 @@ public:
 
 	float perimeter() const {
 		float perimeter = 0;
-		for (size_t i = 0; i < 3; i++)
-			perimeter += std::sqrt(
-				  std::pow(_vertices[i].x - _vertices[(i + 1) % 3].x, 2)
-				+ std::pow(_vertices[i].y - _vertices[(i + 1) % 3].y, 2)
-			);
+		for (size_t i = 0; i < 3; i++) {
+			vec2 const & v1 = _vertices[i];
+			vec2 const & v2 = _vertices[(i + 1) % 3];
+			perimeter += std::sqrt(std::pow(v2.x - v1.x, 2) + std::pow(v2.y - v1.y, 2));
+		}
 		return perimeter;
 	}
 
