@@ -68,14 +68,19 @@ public:
 		_articles.push_back(article);
 	}
 
-	virtual int get_total_price() const {
+	int get_total_price() const {
 		int total = 0;
 		for (size_t i = 0; i < _articles.size(); i++)
 			total += _articles[i].price * _articles[i].quantity;
-		return total;
+		return apply_discount(total);
 	}
+
 	
 protected:
+
+	virtual int apply_discount(int price) const {
+		return price;
+	}
 
 	int _id;
 	Date _date;

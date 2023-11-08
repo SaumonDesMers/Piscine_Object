@@ -9,13 +9,10 @@ public:
 
 	PackageReductionDiscountCommand(int id, Date date, std::string const &customer) : Command(id, date, customer) {}
 
-	int get_total_price() const {
-		int total = 0;
-		for (size_t i = 0; i < this->_articles.size(); i++)
-			total += _articles[i].price * _articles[i].quantity;
-		if (total > 150)
-			total -= 10;
-		return total;
+	int apply_discount(int price) const {
+		if (price > 150)
+			price -= 10;
+		return price;
 	}
 
 };
