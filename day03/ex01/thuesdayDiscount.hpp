@@ -9,6 +9,8 @@ public:
 
 	ThuesdayDiscountCommand(int id, Date date, std::string const &customer) : Command(id, date, customer) {}
 
+protected:
+
 	int apply_discount(int price) const {
 		if (_date.getDay() == Tuesday)
 			price *= 0.9;
