@@ -9,10 +9,6 @@ public:
 
 	static T * getInstance();
 
-	void use() {
-		std::cout << "Using singleton." << std::endl;
-	}
-
 protected:
 
 	static T *_instance;
