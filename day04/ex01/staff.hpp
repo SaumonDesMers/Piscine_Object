@@ -4,13 +4,19 @@
 
 #include "person.hpp"
 #include "singleton.hpp"
+#include "form.hpp"
 
 class Staff : public Person {
 
-private:
-
 public:
-	void sign(Form* form);
+
+	Staff(std::string const & name): Person(name) {}
+
+	void sign(Form* form) {
+		form->execute();
+	}
+
+private:
 };
 
 class StaffList: public Singleton<StaffList>, public std::set<Staff *> {};

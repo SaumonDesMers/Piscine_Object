@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-enum class FormType {
+enum FormType {
 	CourseFinished,
 	NeedMoreClassRoom,
 	NeedCourseCreation,
@@ -16,7 +16,9 @@ private:
 	FormType _formType;
 
 public:
-	Form(FormType formType) {}
+	Form(FormType formType): _formType(formType) {
+		(void)_formType;
+	}
 
 	virtual void execute() = 0;
 };

@@ -1,0 +1,81 @@
+@startuml
+
+class Singleton {
+}
+
+class Person {
+}
+
+class Student {
+}
+Person <|-- Student
+StudentList o-- Student
+
+class StudentList {
+}
+Singleton <|-- StudentList
+std_set <|-- StudentList
+
+class Staff {
+}
+Person <|-- Staff
+StaffList o-- Staff
+
+class StaffList {
+}
+Singleton <|-- StaffList
+std_set <|-- StaffList
+
+class Headmaster {}
+Staff <|-- Headmaster
+
+class Secretary {}
+Staff <|-- Secretary
+
+class Professor {}
+Staff <|-- Professor
+
+class Room {}
+
+class RoomList {}
+Singleton <|-- RoomList
+std_set <|-- RoomList
+RoomList o-- Room
+
+class Classroom {}
+Room <|-- Classroom
+
+class HeadmasterOffice {}
+Room <|-- HeadmasterOffice
+
+class SecretarialOffice {}
+Room <|-- SecretarialOffice
+
+class StaffRestRoom {}
+Room <|-- StaffRestRoom
+
+class Courtyard {}
+Room <|-- Courtyard
+
+class Course {}
+
+class CourseList {}
+Singleton <|-- CourseList
+std_set <|-- CourseList
+CourseList o-- Course
+
+class Form {}
+
+class CourseFinishedForm {}
+Form <|-- CourseFinishedForm
+
+class NeedMoreClassRoomForm {}
+Form <|-- NeedMoreClassRoomForm
+
+class NeedCourseCreationForm {}
+Form <|-- NeedCourseCreationForm
+
+class SubscriptionToCourseForm {}
+Form <|-- SubscriptionToCourseForm
+
+@enduml

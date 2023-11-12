@@ -12,17 +12,27 @@ class Form;
 
 class Room {
 
-private:
-	long long ID;
-	std::set<Person*> _occupants;
-
 public:
-	Room();
+
+	Room(long long id): ID(id) {}
+
+	long long name() {
+		return this->ID;
+	}
+
 	bool canEnter(Person*);
+
 	void enter(Person*);
+
 	void exit(Person*);
 	
 	void printOccupant();
+
+private:
+
+	long long ID;
+	std::set<Person*> _occupants;
+
 };
 
 class RoomList: public Singleton<RoomList>, public std::set<Room *> {};

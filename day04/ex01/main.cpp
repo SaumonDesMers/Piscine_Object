@@ -42,19 +42,19 @@ int main() {
 	testList<StudentList, Student, std::string>("Bob");
 	testList<StudentList, Student, std::string>("Sally");
 
-	testList<StaffList, Staff, std::string>("Bob");
-	testList<StaffList, Staff, std::string>("Sally");
+	testList<StaffList, Staff, std::string>("Bob_staff");
+	testList<StaffList, Staff, std::string>("Sally_staff");
 
-	testList<CourseList, Course, std::string>("Bob");
-	testList<CourseList, Course, std::string>("Sally");
+	testList<CourseList, Course, std::string>("math");
+	testList<CourseList, Course, std::string>("history");
 
-	// testList<RoomList, Room, long long>(0);
-	// testList<RoomList, Room, long long>(1);
+	testList<RoomList, Room, long long>(0);
+	testList<RoomList, Room, long long>(1);
 
 	cleanList<StudentList>();
 	cleanList<StaffList>();
 	cleanList<CourseList>();
-	// cleanList<RoomList>();
+	cleanList<RoomList>();
 
 	return 0;
 }
