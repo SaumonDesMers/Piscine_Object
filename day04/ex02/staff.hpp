@@ -22,30 +22,64 @@ private:
 class StaffList: public Singleton<StaffList>, public std::set<Staff *> {};
 
 class Headmaster : public Staff {
-
-private:
-	std::set<Form*> _formToValidate;
 	
 public:
-	void receiveForm(Form* form);
+
+	void receiveForm(Form* form) {
+		this->_formToValidate.insert(form);
+	}
+
+	void workOnForm() {
+		for (std::set<Form *>::iterator it = this->_formToValidate.begin(); it != this->_formToValidate.end(); it++) {
+			// if form is complete
+			(*it)->execute();
+		}
+	}
+
+private:
+
+	std::set<Form*> _formToValidate;
+
 };
 
 class Secretary : public Staff {
 
+public:
+
+	Form* createForm(FormType formType) {
+		switch (formType) {
+		case CourseFinished:
+			return new CourseFinishedForm();
+		case NeedMoreClassRoom:
+			return new NeedMoreClassRoomForm();
+		case NeedCourseCreation:
+			return new NeedCourseCreationForm();
+		case SubscriptionToCourse:
+			return new SubscriptionToCourseForm();
+		}
+		return NULL;
+	}
+
+	void archiveForm(Form *form) {
+		delete form;
+	}
+
 private:
 
-public:
-	Form* createForm(FormType formType);
-	void archiveForm();
 };
 
 class Professor : public Staff {
 
+public:
+
+	void assignCourse(Course* course);
+
+	void doClass();
+
+	void closeCourse();
+
 private:
+
 	Course* _currentCourse;
 
-public:
-	void assignCourse(Course* course);
-	void doClass();
-	void closeCourse();
 };

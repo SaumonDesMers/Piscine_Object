@@ -25,34 +25,58 @@ public:
 
 class CourseFinishedForm : public Form {
 
+public:
+
+	CourseFinishedForm(): Form(CourseFinished) {}
+
+	void execute() {
+		std::cout << "Execute CourseFinishedForm" << std::endl;
+	}
+
 private:
 
-public:
-	void execute();
 };
 
 class NeedMoreClassRoomForm : public Form {
 
+public:
+
+	NeedMoreClassRoomForm(): Form(NeedMoreClassRoom) {}
+
+	void execute() {
+		std::cout << "Execute NeedMoreClassRoomForm" << std::endl;
+	}
+
 private:
 
-public:
-	void execute();
 };
 
 class NeedCourseCreationForm : public Form {
 
+public:
+
+	NeedCourseCreationForm(): Form(NeedCourseCreation) {}
+
+	void execute() {
+		std::cout << "Execute NeedCourseCreationForm" << std::endl;
+	}
+
 private:
 
-public:
-	void execute();
 };
 
 class SubscriptionToCourseForm : public Form {
 
+public:
+
+	SubscriptionToCourseForm(): Form(SubscriptionToCourse) {}
+
+	void execute() {
+		std::cout << "Execute SubscriptionToCourseForm" << std::endl;
+	}
+
 private:
 
-public:
-	void execute();
 };
 
 #endif // FORM_HPP
