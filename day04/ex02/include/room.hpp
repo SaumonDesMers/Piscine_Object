@@ -20,13 +20,24 @@ public:
 		return this->ID;
 	}
 
-	bool canEnter(Person*);
+	bool canEnter(Person *) {
+		return true;
+	}
 
-	void enter(Person*);
+	void enter(Person * person) {
+		this->_occupants.insert(person);
+	}
 
-	void exit(Person*);
+	void exit(Person * person) {
+		this->_occupants.erase(person);
+	}
 	
-	void printOccupant();
+	void printOccupant() {
+		std::cout << "Room " << this->ID << " occupants:" << std::endl;
+		for (std::set<Person*>::iterator it = this->_occupants.begin(); it != this->_occupants.end(); it++) {
+			std::cout << (*it)->name() << std::endl;
+		}
+	}
 
 private:
 

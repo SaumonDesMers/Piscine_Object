@@ -20,7 +20,7 @@ public:
 		return _currentRoom;
 	}
 
-private:
+protected:
 
 	std::string _name;
 

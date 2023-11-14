@@ -5,12 +5,17 @@
 #include "course.hpp"
 #include "room.hpp"
 #include "staff.hpp"
+#include "headmaster.hpp"
+#include "secretary.hpp"
+#include "professor.hpp"
 
 int main() {
 
 	Headmaster headmaster("John");
 	Secretary secretary("Bob");
-	Professor professor("Alice");
+	Professor professor("Jack");
+	Student student("Alice");
+	Course course("C++", 1, 10);
 
 	Form *form = secretary.createForm(CourseFinished);
 
@@ -18,9 +23,13 @@ int main() {
 
 		CourseFinishedForm &courseFinishedForm = dynamic_cast<CourseFinishedForm &>(*form);
 
-		// courseFinishedForm.getProfessorApproval(&professor);
+		course.subscribe(&student);
+		professor.assignCourse(&course);
+		professor.teach();
 
 		headmaster.receiveForm(&courseFinishedForm);
+		courseFinishedForm.setCourse(&course);
+		courseFinishedForm.setStudent(&student);
 
 		headmaster.signForms();
 

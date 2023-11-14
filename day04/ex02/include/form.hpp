@@ -1,7 +1,12 @@
-#ifndef FORM_HPP
-#define FORM_HPP
+#pragma once
 
 #include <iostream>
+
+// #include "staff.hpp"
+#include "course.hpp"
+
+class Course;
+class Student;
 
 class Headmaster;
 
@@ -13,6 +18,23 @@ enum FormType {
 };
 
 class Form {
+
+public:
+
+	Form(FormType formType): _formType(formType), _isSigned(false) {}
+
+	virtual ~Form() {}
+
+	std::string const & name() const {
+		return Form::_formName[this->_formType];
+	}
+
+	virtual void execute() = 0;
+
+	void sign(Headmaster *) {
+		this->isComplete();
+		this->_isSigned = true;
+	}
 
 protected:
 
@@ -26,35 +48,9 @@ protected:
 			throw std::runtime_error("Form not signed");
 	}
 
-public:
-
-	Form(FormType formType): _formType(formType), _isSigned(false) {
-		(void)_formType;
-	}
-
-	virtual ~Form() {}
-
-	std::string const & name() const {
-		return Form::_formName[this->_formType];
-	}
-
-	virtual void execute() = 0;
-
-	virtual bool isComplete() const = 0;
-
-	void sign(Headmaster *) {
-		this->_isSigned = true;
-	}
+	virtual void isComplete() const {};
 
 };
-
-std::string const Form::_formName[] = {
-	"CourseFinished",
-	"NeedMoreClassRoom",
-	"NeedCourseCreation",
-	"SubscriptionToCourse"
-};
-
 
 
 class CourseFinishedForm : public Form {
@@ -68,18 +64,21 @@ public:
 		std::cout << "Execute CourseFinishedForm" << std::endl;
 	}
 
-	bool isComplete() const {
-		return this->_professorApproval;
+	void isComplete() const;
+
+	void setCourse(Course *course) {
+		this->_course = course;
 	}
 
-	void getProfessorApproval(Professor *) {
-		std::cout << "CourseFinishedForm: Professor approval" << std::endl;
-		this->_professorApproval = true;
+	void setStudent(Student *student) {
+		this->_student = student;
 	}
+
 
 private:
 
-	bool _professorApproval;
+	Course *_course;
+	Student *_student;
 
 };
 
@@ -93,10 +92,6 @@ public:
 	void execute() {
 		this->checkSignature();
 		std::cout << "Execute NeedMoreClassRoomForm" << std::endl;
-	}
-
-	bool isComplete() const {
-		return true;
 	}
 
 private:
@@ -115,10 +110,6 @@ public:
 		std::cout << "Execute NeedCourseCreationForm" << std::endl;
 	}
 
-	bool isComplete() const {
-		return true;
-	}
-
 private:
 
 };
@@ -135,12 +126,6 @@ public:
 		std::cout << "Execute SubscriptionToCourseForm" << std::endl;
 	}
 
-	bool isComplete() const {
-		return true;
-	}
-
 private:
 
 };
-
-#endif // FORM_HPP

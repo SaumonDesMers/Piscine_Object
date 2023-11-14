@@ -3,9 +3,9 @@ target = factory_and_command
 CXX = clang++
 CXXFLAGS = -std=c++98 -g -Wall -Wextra -Werror
 
-VPATH =
-SRCS = main.cpp
-INC_DIR =
+VPATH = src
+SRCS = main.cpp form.cpp staff.cpp professor.cpp
+INC_DIR = -I include -I include/person -I include/form
 
 OBJ_DIR = obj
 DEP_DIR = dep

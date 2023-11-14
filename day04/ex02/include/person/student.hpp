@@ -5,6 +5,7 @@
 
 #include "singleton.hpp"
 #include "person.hpp"
+#include "course.hpp"
 
 class Classroom;
 class Course;
